@@ -17,9 +17,9 @@ menu = {
     },
 
     "sides": {
-        "side_1" : {"item_name": "Garlic Bread", "price": 4.99},
-        "side_2" : {"item_name": "Onion Rings", "price": 6.49},
-        "side_3" : {"item_name": "Crinkle Cut Fries", "price": 5.49},
+        "side_1" : {"item_name": "Garlic Bread", "vegan": True, "price": 4.99},
+        "side_2" : {"item_name": "Onion Rings", "vegan": True, "price": 6.49},
+        "side_3" : {"item_name": "Crinkle Cut Fries", "vegan": True, "price": 5.49},
         "side_4" : {"item_name": "Chicken Wings", "flavors": ["Buffalo", "BBQ", "Peri Peri"],"price": {"5pc": 9.99, "8pc": 14.99, "16pc": 27.99}},
         "side_5" : {"item_name": "Chicken Tenders","flavors": ["Buffalo", "BBQ", "Peri Peri"], "price": {"5pc": 9.99, "8pc": 14.99, "16pc": 27.99}}
     },
@@ -46,31 +46,76 @@ def get_int(prompt):
         except:
             print("Must be an integer")
 
+def display_choices():
+    """Display the actions the user can do"""
+    print("1. Mmenu" \
+    "\n2. Pizzas" \
+    "\n3. Sides" \
+    "\n4. Drinks" \
+    "\n5. Vegan" \
+    "\n6. Checkout" \
+    "\n7. Exit")
+
+def display_pizza():
+    """Display the pizzas"""
+    for item in menu['pizzas'].values():
+        print(f"{item['item_name']} | Large: ${item['price']['large']} | Extra Large: ${item['price']['extra_large']}")
+
+
+def display_sides():
+    """Display the sides"""
+    for item in menu['sides'].values():
+        if "flavors" in item:
+            print(f"{item['item_name']} | Flavors: {item['flavors'][0]}, {item['flavors'][1]}, {item['flavors'][2]} | 5pc: ${item['price']['5pc']} | 8pc: ${item['price']['8pc']} | 16pc: ${item['price']['16pc']}")
+        else:
+            print(f"{item['item_name']} | Price: ${item['price']}")
+
+def display_drinks():
+    """Display the drinks"""
+    pass
+
 def pick_up_or_delivery():
     """Ask the user whether they are going to pick-up the order or have it delivered"""
     choice = 0
     while choice not in [1, 2]:
         choice = get_int("1. Pick up  2. Delivery" 
-        "\n>")
+        "\n> ")
+
+        if choice not in [1, 2]:
+            print("Choose a valid option")
 
     return choice
 
 def get_details():
     """Get the user to enter their name, phone number, and address if they have chosen the deliver option"""
-    details = {"name": "", "phone_number": ""}
-    name = input("Enter name: ").lower()
+    details = {"Name": "", "Phone Number": ""}
+    name = input("Enter name: ")
     phone_number = get_int("Enter phone number: ")
     if pick_up_or_delivery() == 2:
         address = input("Enter Address: ")
         details["address"] = address
-    details["name"] = name
-    details["phone_number"] = phone_number
+    details["Name"] = name
+    details["Phone Number"] = phone_number
 
     return details
 
-def display_details(details):
+def get_order():
     """ """
+    pass
+
+def display_details(details):
+    """Display the user details"""
     for detail in details:
         print(f"{detail}: {details[detail]} ")
 
-display_details(get_details())
+def main():
+    while True:
+        display_choices()
+
+        choice = get_int("Enter action:"
+        "\n> ")
+        if choice in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+            pass
+
+display_pizza()
+display_sides()
