@@ -20,8 +20,8 @@ menu = {
         "side_1" : {"item_name": "Garlic Bread", "vegan": True, "price": 4.99},
         "side_2" : {"item_name": "Onion Rings", "vegan": True, "price": 6.49},
         "side_3" : {"item_name": "Crinkle Cut Fries", "vegan": True, "price": 5.49},
-        "side_4" : {"item_name": "Chicken Wings", "flavors": ["Buffalo", "BBQ", "Peri Peri"],"price": {"5pc": 9.99, "8pc": 14.99, "16pc": 27.99}},
-        "side_5" : {"item_name": "Chicken Tenders","flavors": ["Buffalo", "BBQ", "Peri Peri"], "price": {"5pc": 9.99, "8pc": 14.99, "16pc": 27.99}}
+        "side_4" : {"item_name": "Chicken Wings", "vegan": False, "flavors": ["Buffalo", "BBQ", "Peri Peri"],"price": {"5pc": 9.99, "8pc": 14.99, "16pc": 27.99}},
+        "side_5" : {"item_name": "Chicken Tenders", "vegan": False, "flavors": ["Buffalo", "BBQ", "Peri Peri"], "price": {"5pc": 9.99, "8pc": 14.99, "16pc": 27.99}}
     },
 
     "drinks": {
@@ -33,6 +33,8 @@ menu = {
         "drink_6" : {"item_name": "Apple Juice", "price": {"750ml": 6.49, "350ml": 4.99}}
     }
 }
+
+DELIVERY_CHARGE = 10
 
 def get_int(prompt):
     """Validates user input. Negative numbers are unnecessary for this program so it also checks fro positive integers."""
@@ -48,11 +50,11 @@ def get_int(prompt):
 
 def display_choices():
     """Display the actions the user can do"""
-    print("1. Mmenu" \
-    "\n2. Pizzas" \
-    "\n3. Sides" \
-    "\n4. Drinks" \
-    "\n5. Vegan" \
+    print("\n1. Pizzas" \
+    "\n2. Sides" \
+    "\n3. Drinks" \
+    "\n4. Vegan" \
+    "\n5. Add to order"
     "\n6. Checkout" \
     "\n7. Exit")
 
@@ -100,6 +102,17 @@ def get_details():
     return details
 
 def get_order():
+    """Take user's order and add it to their cart"""
+    found = False
+    order = []
+    place_order = input("Enter item name\
+                      \n> ")
+    
+    for items in menu:
+        for item in menu[items]['item_name']:
+            print(item)
+
+def checkout():
     """ """
     pass
 
@@ -114,8 +127,22 @@ def main():
 
         choice = get_int("Enter action:"
         "\n> ")
-        if choice in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
-            pass
+        match choice:
+            case 1:
+                display_pizza()
+            case 2:
+                display_sides()
+            case 3:
+                display_drinks()
+            case 4:
+                pass
+            case 5:
+                get_order()
+            case 6:
+                checkout()
+            case 7:
+                return
+            case _:
+                print("Choose one of the options")
 
-display_pizza()
-display_sides()
+main()
