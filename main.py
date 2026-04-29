@@ -17,10 +17,10 @@ menu = {
     },
 
     "drinks": {
-        "drink_1" : {"item_name": "Coca Cola", "price": {"1.5L": 4.99, "600ml": 3.99, "330ml Can": 2.99}},
-        "drink_2" : {"item_name": "Coca Cola Zero Sugar", "price": {"1.5L": 4.99, "600ml": 3.99, "330ml Can": 2.99}},
-        "drink_3" : {"item_name": "Sprite", "price": {"1.5L": 4.99, "600ml": 3.99, "330ml Can": 2.99}},
-        "drink_4" : {"item_name": "Sprite Zero Sugar", "price": {"1.5L": 4.99, "600ml": 3.99, "330ml Can": 2.99}},
+        "drink_1" : {"item_name": "Coca Cola", "price": {"1.5L": 4.99, "330ml Can": 2.99}},
+        "drink_2" : {"item_name": "Coca Cola Zero Sugar", "price": {"1.5L": 4.99, "330ml Can": 2.99}},
+        "drink_3" : {"item_name": "Sprite", "price": {"1.5L": 4.99, "330ml Can": 2.99}},
+        "drink_4" : {"item_name": "Sprite Zero Sugar", "price": {"1.5L": 4.99, "330ml Can": 2.99}},
         "drink_5" : {"item_name": "Water", "price": {"1.5L": 4.99, "750ml": 3.99}},
         "drink_6" : {"item_name": "Apple Juice", "price": {"750ml": 6.49, "350ml": 4.99}}
     }
@@ -54,7 +54,7 @@ def display_pizza():
     print("-"*50)
     for item in menu['pizzas'].values():
         vegan_tag = "Vegan" if item['vegan'] else "Non-vegan"
-        print(f"{item['item_name']:<25} | ${item['price']['large']:>15} | ${item['price']['extra_large']:>15} | {vegan_tag:>15}")
+        print(f"{item['item_name']:<25} | ${item['price']['large']:>15.2f} | ${item['price']['extra_large']:>15.2f} | {vegan_tag:>15}")
 
 def display_drinks():
     """Display the drinks"""
@@ -62,14 +62,14 @@ def display_drinks():
     for items in menu['drinks'].values():
         print(items['item_name'])
         for size, price in items['price'].items():
-            print(f"  {size:<5}  ${price:>5}")
+            print(f"  {size:<5}  ${price:>5.2f}")
 
 def order_pizza():
     """Take the user's pizza orders"""
     while True:
         display_pizza()
         print("Type the name of the pizza you want or type 'B' to go back")
-        user_input = input("> ").strip().lower()
+        user_input = input("> ").strip().lower().replace(" ", "")
 
         if user_input == 'b':
             break
@@ -77,9 +77,9 @@ def order_pizza():
         pizza_found = False
         pizza_details = {}
 
-        # compared the user's input to the pizzas in the dictionary
+        # compare the user's input to the pizzas in the dictionary
         for item in menu['pizzas'].values():
-            if user_input == item['item_name'].lower():
+            if user_input == item['item_name'].strip().lower().replace(" ", ""):
                 pizza_found = True
                 price = item['price'].items()
                 pizza_name = item['item_name']
@@ -105,8 +105,63 @@ def order_pizza():
                     case _:
                         print("Choose a valid option")
 
+        break
+
     pizza_order = [pizza_details['item_name'], size, price]
     return pizza_order
+
+def order_drinks():
+    """Take the user's drink orders"""
+    while True:
+        display_drinks()
+        print("Type the name of the drink you want or type 'b' to go back")
+        user_input = input("> ").strip().lower().replace(" ", "")
+
+        if user_input == 'b':
+            break
+
+        drink_found = False
+        drink_details = {}
+        size = []
+
+        # compare the user's input to the drinks in the dictionary
+        for item in menu["drinks"].values():
+            if user_input == item['item_name'].strip().lower().replace(" ", ""):
+                drink_found = True
+                drink_name = item['item_name']
+                drink_details = item
+                price = item['price'].items()
+                for num in price:
+                    size.append(num[0])
+
+        if drink_found == True:
+            print(f"You have selected {drink_name}")
+            while True:
+                print(f"Choose size: 1. {size[0]} 2. {size[1]}")
+                chosen_size = get_int("> ")
+                match chosen_size:
+                    case 1:
+                        print(f"You have ordered a {size[0]} {drink_name}")
+                        drink_size = size[0]
+                        price = drink_details['price'][size[0]]
+                        break
+                    case 2:
+                        print(f"You have ordered a {size[1]} {drink_name}")
+                        drink_size = size[1]
+                        price = drink_details['price'][size[1]]
+                        break
+                    case _:
+                        print("Choose a valid size")
+
+        break
+
+    drink_order = [drink_details['item_name'], drink_size, price]
+    return drink_order
+
+
+
+
+
 
 
 def pick_up_or_delivery():
@@ -134,9 +189,14 @@ def get_details():
 
     return details
 
-def checkout():
+def checkout(items):
     """ """
-    pass
+    print(f"{"Item":<25} | {"Size":>15} | {"Price":>15}")
+    for item in items:
+        print(f"{item[0]:<25} | {item[1]:>15} | ${item[2]:>15.2f}")
+        total += item[2]
+
+    print(f"{"Total":<25} | {"":>15} | {total:>15.2f}")
 
 def display_details(details):
     """Display the user details"""
@@ -144,6 +204,7 @@ def display_details(details):
         print(f"{detail}: {details[detail]} ")
 
 def main():
+    order = []
     while True:
         display_choices()
 
@@ -151,11 +212,11 @@ def main():
         "\n> ")
         match choice:
             case 1:
-                print(order_pizza())
+                order.append(order_pizza())
             case 2:
-                display_drinks()
+                order.append(order_drinks())
             case 3:
-                checkout()
+                checkout(order)
             case 4:
                 return
             case _:
