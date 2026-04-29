@@ -16,14 +16,6 @@ menu = {
         "pizza_10": {"item_name": "Hot and Spicy Veggie", "vegan": True, "price": {"large": 10.99, "extra_large": 15.48}}
     },
 
-    "sides": {
-        "side_1" : {"item_name": "Garlic Bread", "vegan": True, "price": 4.99},
-        "side_2" : {"item_name": "Onion Rings", "vegan": True, "price": 6.49},
-        "side_3" : {"item_name": "Crinkle Cut Fries", "vegan": True, "price": 5.49},
-        "side_4" : {"item_name": "Chicken Wings", "vegan": False, "flavors": ["Buffalo", "BBQ", "Peri Peri"],"price": {"5pc": 9.99, "8pc": 14.99, "16pc": 27.99}},
-        "side_5" : {"item_name": "Chicken Tenders", "vegan": False, "flavors": ["Buffalo", "BBQ", "Peri Peri"], "price": {"5pc": 9.99, "8pc": 14.99, "16pc": 27.99}}
-    },
-
     "drinks": {
         "drink_1" : {"item_name": "Coca Cola", "price": {"1.5L": 4.99, "600ml": 3.99, "330ml Can": 2.99}},
         "drink_2" : {"item_name": "Coca Cola Zero Sugar", "price": {"1.5L": 4.99, "600ml": 3.99, "330ml Can": 2.99}},
@@ -51,30 +43,26 @@ def get_int(prompt):
 def display_choices():
     """Display the actions the user can do"""
     print("\n1. Pizzas" \
-    "\n2. Sides" \
-    "\n3. Drinks" \
-    "\n4. Vegan" \
-    "\n5. Add to order"
-    "\n6. Checkout" \
-    "\n7. Exit")
+    "\n2. Drinks" \
+    "\n3. Checkout" \
+    "\n4. Exit")
 
 def display_pizza():
     """Display the pizzas"""
+    print(f"{" PIZZA MENU ":=^50}")
+    print(f"{"Pizza":<25} | {"Large":>15} | {"Extra Large":>15} | {"Dietary":>15}")
+    print("-"*50)
     for item in menu['pizzas'].values():
-        print(f"{item['item_name']} | Large: ${item['price']['large']} | Extra Large: ${item['price']['extra_large']}")
-
-
-def display_sides():
-    """Display the sides"""
-    for item in menu['sides'].values():
-        if "flavors" in item:
-            print(f"{item['item_name']} | Flavors: {item['flavors'][0]}, {item['flavors'][1]}, {item['flavors'][2]} | 5pc: ${item['price']['5pc']} | 8pc: ${item['price']['8pc']} | 16pc: ${item['price']['16pc']}")
-        else:
-            print(f"{item['item_name']} | Price: ${item['price']}")
+        vegan_tag = "Vegan" if item['vegan'] else "Non-vegan"
+        print(f"{item['item_name']:<25} | ${item['price']['large']:>15} | ${item['price']['extra_large']:>15} | {vegan_tag:>15}")
 
 def display_drinks():
     """Display the drinks"""
-    pass
+    print(f"{"Drinks":=^50}")
+    for items in menu['drinks'].values():
+        print(items['item_name'])
+        for size, price in items['price'].items():
+            print(f"  {size:<5}  ${price:>5}")
 
 def pick_up_or_delivery():
     """Ask the user whether they are going to pick-up the order or have it delivered"""
@@ -101,17 +89,6 @@ def get_details():
 
     return details
 
-def get_order():
-    """Take user's order and add it to their cart"""
-    found = False
-    order = []
-    place_order = input("Enter item name\
-                      \n> ")
-    
-    for items in menu:
-        for item in menu[items]['item_name']:
-            print(item)
-
 def checkout():
     """ """
     pass
@@ -131,16 +108,10 @@ def main():
             case 1:
                 display_pizza()
             case 2:
-                display_sides()
-            case 3:
                 display_drinks()
-            case 4:
-                pass
-            case 5:
-                get_order()
-            case 6:
+            case 3:
                 checkout()
-            case 7:
+            case 4:
                 return
             case _:
                 print("Choose one of the options")
