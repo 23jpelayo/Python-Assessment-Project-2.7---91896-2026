@@ -64,6 +64,51 @@ def display_drinks():
         for size, price in items['price'].items():
             print(f"  {size:<5}  ${price:>5}")
 
+def order_pizza():
+    """Take the user's pizza orders"""
+    while True:
+        display_pizza()
+        print("Type the name of the pizza you want or type 'B' to go back")
+        user_input = input("> ").strip().lower()
+
+        if user_input == 'b':
+            break
+
+        pizza_found = False
+        pizza_details = {}
+
+        # compared the user's input to the pizzas in the dictionary
+        for item in menu['pizzas'].values():
+            if user_input == item['item_name'].lower():
+                pizza_found = True
+                price = item['price'].items()
+                pizza_name = item['item_name']
+                pizza_details = item
+
+
+        if pizza_found == True:
+            print(f"You have selected: {pizza_name}")
+            while True:
+                print("Choose size: (1. Large or 2. Extra Large)")
+                size = get_int("> ")
+                match size:
+                    case 1:
+                        print(f"You have ordered a large {pizza_name}")
+                        size = "Large"
+                        price = pizza_details['price']['large']
+                        break
+                    case 2:
+                        print(f"You have ordered an extra large {pizza_name}")
+                        size = "Extra Large"
+                        price = pizza_details['price']['extra_large']
+                        break
+                    case _:
+                        print("Choose a valid option")
+
+    pizza_order = [pizza_details['item_name'], size, price]
+    return pizza_order
+
+
 def pick_up_or_delivery():
     """Ask the user whether they are going to pick-up the order or have it delivered"""
     choice = 0
@@ -106,7 +151,7 @@ def main():
         "\n> ")
         match choice:
             case 1:
-                display_pizza()
+                print(order_pizza())
             case 2:
                 display_drinks()
             case 3:
