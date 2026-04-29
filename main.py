@@ -49,16 +49,19 @@ def display_choices():
 
 def display_pizza():
     """Display the pizzas"""
-    print(f"{" PIZZA MENU ":=^50}")
+    print(f"{" PIZZA MENU ":=^100}")
     print(f"{"Pizza":<25} | {"Large":>15} | {"Extra Large":>15} | {"Dietary":>15}")
     print("-"*50)
     for item in menu['pizzas'].values():
-        vegan_tag = "Vegan" if item['vegan'] else "Non-vegan"
+        if item['vegan'] == True:
+            vegan_tag = "Vegan"
+        else:
+            vegan_tag = "Non-vegan"
         print(f"{item['item_name']:<25} | ${item['price']['large']:>15.2f} | ${item['price']['extra_large']:>15.2f} | {vegan_tag:>15}")
 
 def display_drinks():
     """Display the drinks"""
-    print(f"{"Drinks":=^50}")
+    print(f"{" DRINKS ":=^100}")
     for items in menu['drinks'].values():
         print(items['item_name'])
         for size, price in items['price'].items():
@@ -72,7 +75,7 @@ def order_pizza():
         user_input = input("> ").strip().lower().replace(" ", "")
 
         if user_input == 'b':
-            break
+            return
 
         pizza_found = False
         pizza_details = {}
@@ -118,7 +121,7 @@ def order_drinks():
         user_input = input("> ").strip().lower().replace(" ", "")
 
         if user_input == 'b':
-            break
+            return
 
         drink_found = False
         drink_details = {}
@@ -159,11 +162,6 @@ def order_drinks():
     return drink_order
 
 
-
-
-
-
-
 def pick_up_or_delivery():
     """Ask the user whether they are going to pick-up the order or have it delivered"""
     choice = 0
@@ -190,13 +188,15 @@ def get_details():
     return details
 
 def checkout(items):
-    """ """
+    """Display the items the user has ordered and show the individual prices and the total price"""
+    total = 0
     print(f"{"Item":<25} | {"Size":>15} | {"Price":>15}")
     for item in items:
         print(f"{item[0]:<25} | {item[1]:>15} | ${item[2]:>15.2f}")
         total += item[2]
 
     print(f"{"Total":<25} | {"":>15} | {total:>15.2f}")
+    get_details()
 
 def display_details(details):
     """Display the user details"""
@@ -218,7 +218,7 @@ def main():
             case 3:
                 checkout(order)
             case 4:
-                return
+                return #end the program
             case _:
                 print("Choose one of the options")
 
