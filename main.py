@@ -108,10 +108,12 @@ def order_pizza():
                     case _:
                         print("Choose a valid option")
 
-        break
+            pizza_order = [pizza_details['item_name'], size, price]
+            return pizza_order
+        
+        else:
+            print("Invalid name. Please check your spelling")
 
-    pizza_order = [pizza_details['item_name'], size, price]
-    return pizza_order
 
 def order_drinks():
     """Take the user's drink orders"""
@@ -156,10 +158,11 @@ def order_drinks():
                     case _:
                         print("Choose a valid size")
 
-        break
+            drink_order = [drink_details['item_name'], drink_size, price]
+            return drink_order
+        else:
+            print("Invalid name. Please check your spelling")
 
-    drink_order = [drink_details['item_name'], drink_size, price]
-    return drink_order
 
 
 def pick_up_or_delivery():
@@ -272,9 +275,13 @@ def main():
         "\n> ")
         match choice:
             case 1:
-                order.append(order_pizza())
+                result = order_pizza()
+                if result is not None:
+                    order.append(result)
             case 2:
-                order.append(order_drinks())
+                result = order_drinks()
+                if result is not None:
+                    order.append(result)
             case 3:
                 checkout(order)
             case 4:
