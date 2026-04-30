@@ -176,27 +176,87 @@ def pick_up_or_delivery():
 
 def get_details():
     """Get the user to enter their name, phone number, and address if they have chosen the deliver option"""
-    details = {"Name": "", "Phone Number": ""}
+    details = {"Name": "", "Phone Number": "", "Service": ""}
+    choice = pick_up_or_delivery()
     name = input("Enter name: ")
     phone_number = get_int("Enter phone number: ")
-    if pick_up_or_delivery() == 2:
+    if choice == 2:
         address = input("Enter Address: ")
-        details["address"] = address
-    details["Name"] = name
-    details["Phone Number"] = phone_number
+        details['address'] = address
+        details['Service'] = "Delivery"
+    else:
+        details['Service'] = "Pick-up"
+    details['Name'] = name
+    details['Phone Number'] = phone_number
 
     return details
 
 def checkout(items):
     """Display the items the user has ordered and show the individual prices and the total price"""
-    total = 0
-    print(f"{"Item":<25} | {"Size":>15} | {"Price":>15}")
-    for item in items:
-        print(f"{item[0]:<25} | {item[1]:>15} | ${item[2]:>15.2f}")
-        total += item[2]
+    while True:
+        if len(items) > 0:
 
-    print(f"{"Total":<25} | {"":>15} | {total:>15.2f}")
-    get_details()
+            total = 0
+            print(f"{" CART ":=^65}")
+            print(f"{"Item":<25} | {"Size":>15} | {"Price":>15}")
+            for item in items:
+                print(f"{item[0]:<25} | {item[1]:>15} | ${item[2]:>15.2f}")
+                total += item[2]
+
+            print(f"{"Total":<25} | {"":>15} | {total:>15.2f}")
+
+            print("What would you like to do?"\
+            "\n1. Confirm and Checkout" \
+            "\n2. Remove item" \
+            "\n3. Go back")
+
+            while True:
+                choice = get_int("> ")
+                match choice:
+                    case 1:
+                        customer_details = get_details()
+                        if customer_details['Service'] == "Delivery":
+                            print(f"\nDelivery Charge: ${DELIVERY_CHARGE}")
+                            total += DELIVERY_CHARGE
+
+                        print(f"Total Cost: ${total:.2f}")
+                        print("Order Confirmed. Thank you for shopping")
+                        exit() #exit the whole program
+
+                    case 2:
+                        print("Enter the name of the item you want to remove or type 'b' to cancel")
+                        remove_item_name = input("> ").strip().lower().replace(" ", "")
+                        if remove_item_name == 'b':
+                            return
+                        
+                        item_to_remove = ""
+                        
+                        for item in items:
+                            if item[0].strip().lower().replace(" ", "") == remove_item_name:
+                                item_to_remove = item
+                                break
+
+                            
+                        if item_to_remove != "":
+                            items.remove(item_to_remove)
+                            print(f"Successfully removed {item_to_remove[0]}")
+                        else:
+                            print("Item not found. Please check your spelling")
+
+                        break
+
+                    case 3:
+                        print("Returning to menu")
+                        return
+
+                    case _:
+                        print("Choose one of the options")
+                        
+
+
+        else:
+            print("You have not ordered anything yet")
+            return
 
 def display_details(details):
     """Display the user details"""
