@@ -270,8 +270,8 @@ def checkout(items):
 
                     case 3:
                         print("Type 'c' to confirm cancellation or 'b' to go back")
-                        confirmation = input("> ").strip().lower()
                         while True:
+                            confirmation = input("> ").strip().lower()
                             if confirmation == 'c':
                                 items.clear()
                                 print("Order cancelled")
