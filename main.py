@@ -1,5 +1,7 @@
 """
-
+A simple program that processes food orders
+This program takes customer orders and stores them in a list
+The customers can use the program to order pizza and drinks. They also have the option to cancel their orders.
 """
 
 menu = {
@@ -206,7 +208,7 @@ def checkout(items):
                 print(f"{item[0]:<25} | {item[1]:>15} | ${item[2]:>15.2f}")
                 total += item[2]
 
-            print(f"{"Total":<25} | {"":>15} | {total:>15.2f}")
+            print(f"{"Total":<25} | {"":>15} | ${total:>15.2f}")
 
             print("What would you like to do?"\
             "\n1. Confirm and Checkout" \
@@ -225,6 +227,12 @@ def checkout(items):
 
                         print(f"Total Cost: ${total:.2f}")
                         print("Order Confirmed. Thank you for shopping")
+                        print(f"{" RECEIPT ":=^65}")
+                        print(f"{"Item":<25} | {"Size":>15} | {"Price":>15}")
+                        for item in items:
+                            print(f"{item[0]:<25} | {item[1]:>15} | ${item[2]:>15.2f}")
+
+                        print(f"{"Total":<25} | {"":>15} | ${total:>15.2f}")
                         print("\nWould you like to make another order?" \
                         "\nType '1' to order again or type '2' to exit")
                         while True:
@@ -289,6 +297,7 @@ def display_details(details):
         print(f"{detail}: {details[detail]} ")
 
 def main():
+    """This is the main program"""
     order = []
     while True:
         display_choices()
