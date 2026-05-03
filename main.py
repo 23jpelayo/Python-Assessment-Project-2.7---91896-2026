@@ -271,12 +271,15 @@ def checkout(items):
                     case 3:
                         print("Type 'c' to confirm cancellation or 'b' to go back")
                         confirmation = input("> ").strip().lower()
-                        if confirmation == 'c':
-                            items.clear()
-                            print("Order cancelled")
-                            return
-                        elif confirmation == 'b':
-                            return
+                        while True:
+                            if confirmation == 'c':
+                                items.clear()
+                                print("Order cancelled")
+                                return
+                            elif confirmation == 'b':
+                                return
+                            else:
+                                print("Choose a valid option")
 
                     case 4:
                         print("Returning to menu")
