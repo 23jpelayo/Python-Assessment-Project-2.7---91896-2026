@@ -274,7 +274,7 @@ def checkout(items):
                         if confirmation == 'c':
                             items.clear()
                             print("Order cancelled")
-                            exit()
+                            return
                         elif confirmation == 'b':
                             return
 
