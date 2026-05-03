@@ -211,7 +211,8 @@ def checkout(items):
             print("What would you like to do?"\
             "\n1. Confirm and Checkout" \
             "\n2. Remove item" \
-            "\n3. Go back")
+            "\n3. Cancel order"
+            "\n4. Go back")
 
             while True:
                 choice = get_int("> ")
@@ -224,7 +225,18 @@ def checkout(items):
 
                         print(f"Total Cost: ${total:.2f}")
                         print("Order Confirmed. Thank you for shopping")
-                        exit() #exit the whole program
+                        print("\nWould you like to make another order?" \
+                        "\nType '1' to order again or type '2' to exit")
+                        while True:
+                            user_choice = get_int("> ")
+                            match user_choice:
+                                case 1:
+                                    items.clear()
+                                    return
+                                case 2:
+                                    exit()
+                                case _:
+                                    print('Choose a valid option')
 
                     case 2:
                         print("Enter the name of the item you want to remove or type 'b' to cancel")
@@ -249,6 +261,16 @@ def checkout(items):
                         break
 
                     case 3:
+                        print("Type 'c' to confirm cancellation or 'b' to go back")
+                        confirmation = input("> ").strip().lower()
+                        if confirmation == 'c':
+                            items.clear()
+                            print("Order cancelled")
+                            exit()
+                        elif confirmation == 'b':
+                            return
+
+                    case 4:
                         print("Returning to menu")
                         return
 
@@ -285,6 +307,7 @@ def main():
             case 3:
                 checkout(order)
             case 4:
+                print("Exit successful")
                 return #end the program
             case _:
                 print("Choose one of the options")
